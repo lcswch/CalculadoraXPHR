@@ -32,6 +32,9 @@
             width: 100%;
             max-width: 500px;
             border: 1px solid #444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h2 {
@@ -46,7 +49,7 @@
             margin: 10px 0 5px;
         }
 
-        input {
+        input, select {
             padding: 10px;
             width: 100%;
             font-size: 1.1em;
@@ -57,7 +60,7 @@
             color: #e0e0e0;
         }
 
-        input:focus {
+        input:focus, select:focus {
             border-color: #4a148c;
             outline: none;
         }
@@ -71,6 +74,8 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px; /* Garante o espaçamento entre os botões */
         }
 
         button:hover {
@@ -103,6 +108,12 @@
         input[type="number"] {
             -moz-appearance: textfield;
         }
+
+        #timer {
+            font-size: 1.5em;
+            margin-top: 15px;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -112,25 +123,120 @@
         <h2>By🍄</h2>
 
         <label>Experiência Inicial:</label>
-        <input type="number" id="xpInicial"><br>
+        <input type="number" id="xpInicial" style="text-align: center;"><br>
 
         <label>Experiência Final:</label>
-        <input type="number" id="xpAtual"><br>
+        <input type="number" id="xpAtual" style="text-align: center;"><br>
 
-        <label>Experiência Total do Nível:</label>
-        <input type="number" id="xpTotal"><br>
+        <label>Legacy Level Atual:</label>
+        <select id="nivel" style="text-align: center;">
+            <!-- Adicionando os níveis de 1 a 76 -->
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="48">48</option>
+            <option value="49">49</option>
+            <option value="50">50</option>
+            <option value="51">51</option>
+            <option value="52">52</option>
+            <option value="53">53</option>
+            <option value="54">54</option>
+            <option value="55">55</option>
+            <option value="56">56</option>
+            <option value="57">57</option>
+            <option value="58">58</option>
+            <option value="59">59</option>
+            <option value="60">60</option>
+            <option value="61">61</option>
+            <option value="62">62</option>
+            <option value="63">63</option>
+            <option value="64">64</option>
+            <option value="65">65</option>
+            <option value="66">66</option>
+            <option value="67">67</option>
+            <option value="68">68</option>
+            <option value="69">69</option>
+            <option value="70">70</option>
+            <option value="71">71</option>
+            <option value="72">72</option>
+            <option value="73">73</option>
+            <option value="74">74</option>
+            <option value="75">75</option>
+        </select><br>
 
         <button onclick="calcularXP()">Calcular</button>
 
+        <button onclick="iniciarContagemRegressiva()">Iniciar Cronometro</button>
+
         <p id="resultado"></p>
+        <p id="timer"></p>
     </div>
 
     <script>
+        // Array com a experiência total por nível
+        const xpPorNivel = [
+            0, 4000, 5200, 6760, 8788, 11424, 14852, 19307, 25099, 32629,
+            42418, 55143, 71686, 93192, 121150, 157495, 204744, 270031, 316780, 395543,
+            491543, 607601, 746830, 912651, 1108804, 1297301, 1517842, 1775875, 2077774, 2430995,
+            2797630, 3189298, 3635800, 4144812, 4650869, 5243931, 5820763, 6461047, 7171763, 8296120,
+            9260120, 10318121, 11477579, 12740113, 14014124, 15415536, 16957090, 18652799, 20518079, 22569887,
+            24826875, 27309563, 30040519, 33044571, 36018583, 39590000, 42992918, 46693445, 50640391, 55000000,
+            59364440, 64707240, 70530891, 76878671, 80580000, 86705005, 94408455, 103014216, 107599240, 115418740,
+            123707745, 132482862, 141844100, 151580375, 161948885, 216683260
+        ];
+
         function calcularXP() {
             let xpInicial = parseInt(document.getElementById("xpInicial").value);
             let xpAtual = parseInt(document.getElementById("xpAtual").value);
             let tempo = 15; // Tempo fixo de 15 minutos
-            let xpTotal = parseInt(document.getElementById("xpTotal").value);
+            let nivel = parseInt(document.getElementById("nivel").value);
+
+            // Obter o XP total do nível selecionado
+            let xpTotal = xpPorNivel[nivel];
 
             if (isNaN(xpInicial) || isNaN(xpAtual) || isNaN(xpTotal) || tempo <= 0) {
                 alert("Preencha todos os campos corretamente!");
@@ -153,6 +259,30 @@
             let resultado = document.getElementById("resultado");
             resultado.innerHTML = resultadoTexto;
             resultado.style.display = "block"; // Torna a caixa visível
+        }
+
+        function iniciarContagemRegressiva() {
+            let tempoRestante = 15 * 60; // 15 minutos em segundos
+            let timerElement = document.getElementById("timer");
+
+            let interval = setInterval(function() {
+                let minutos = Math.floor(tempoRestante / 60);
+                let segundos = tempoRestante % 60;
+
+                timerElement.innerHTML = `${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+
+                if (tempoRestante === 0) {
+                    clearInterval(interval);
+                    tocarSom();
+                } else {
+                    tempoRestante--;
+                }
+            }, 1000);
+        }
+
+        function tocarSom() {
+            let audio = new Audio('https://www.soundjay.com/buttons/sounds/beep-09.mp3'); // URL do som
+            audio.play();
         }
     </script>
 
